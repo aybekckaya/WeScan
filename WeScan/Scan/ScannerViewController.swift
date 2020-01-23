@@ -80,7 +80,8 @@ final class ScannerViewController: UIViewController {
         captureSessionManager?.delegate = self
         
         originalBarStyle = navigationController?.navigationBar.barStyle
-        
+        cancelButton.removeFromSuperview()
+        shutterButton.removeFromSuperview()
         NotificationCenter.default.addObserver(self, selector: #selector(subjectAreaDidChange), name: Notification.Name.AVCaptureDeviceSubjectAreaDidChange, object: nil)
     }
     
@@ -129,8 +130,8 @@ final class ScannerViewController: UIViewController {
     }
     
     private func setupNavigationBar() {
-        navigationItem.setLeftBarButton(flashButton, animated: false)
-        navigationItem.setRightBarButton(autoScanButton, animated: false)
+        //navigationItem.setLeftBarButton(flashButton, animated: false)
+        //navigationItem.setRightBarButton(autoScanButton, animated: false)
         
         if UIImagePickerController.isFlashAvailable(for: .rear) == false {
             let flashOffImage = UIImage(named: "flashUnavailable", in: Bundle(for: ScannerViewController.self), compatibleWith: nil)
@@ -226,6 +227,12 @@ final class ScannerViewController: UIViewController {
     
     // MARK: - Actions
     
+  
+    
+    public func captureImage() {
+        self.captureImage(UIButton())
+    }
+    
     @objc private func captureImage(_ sender: UIButton) {
         (navigationController as? ImageScannerController)?.flashToBlack()
         shutterButton.isUserInteractionEnabled = false
@@ -233,6 +240,8 @@ final class ScannerViewController: UIViewController {
     }
     
     @objc private func toggleAutoScan() {
+        CaptureSession.current.isAutoScanEnabled = false
+        return
         if CaptureSession.current.isAutoScanEnabled {
             CaptureSession.current.isAutoScanEnabled = false
             autoScanButton.title = NSLocalizedString("wescan.scanning.manual", tableName: nil, bundle: Bundle(for: ScannerViewController.self), value: "Manual", comment: "The manual button state")

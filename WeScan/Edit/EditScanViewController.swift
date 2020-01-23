@@ -9,6 +9,15 @@
 import UIKit
 import AVFoundation
 
+/**
+ Akış :
+ Scanner view controller da image seçildiğinde delegate ile HomeViewController 'a bildirsin.
+ HomeViewController EditVC yi açar bu resim ile aynı anda home içinde reTake ve done buttonları olur.
+ eğer done basılırsa , en sona croplanmış resim alınacak. 
+ 
+ */
+
+
 /// The `EditScanViewController` offers an interface for the user to edit the detected quadrilateral.
 final class EditScanViewController: UIViewController {
     
@@ -129,6 +138,10 @@ final class EditScanViewController: UIViewController {
         NSLayoutConstraint.activate(quadViewConstraints + imageViewConstraints)
     }
     
+    public func done() {
+        self.pushReviewController()
+    }
+    
     // MARK: - Actions
     @objc func cancelButtonTapped() {
         if let imageScannerController = navigationController as? ImageScannerController {
@@ -168,8 +181,11 @@ final class EditScanViewController: UIViewController {
         
         let results = ImageScannerResults(detectedRectangle: scaledQuad, originalScan: ImageScannerScan(image: image), croppedScan: ImageScannerScan(image: croppedImage), enhancedScan: enhancedScan)
         
-        let reviewViewController = ReviewViewController(results: results)
-        navigationController?.pushViewController(reviewViewController, animated: true)
+        guard let imageScannerController = navigationController as? ImageScannerController else { return }
+        imageScannerController.imageScannerDelegate?.imageScannerController(imageScannerController, didFinishScanningWithResults: results)
+        
+       // let reviewViewController = ReviewViewController(results: results)
+       // navigationController?.pushViewController(reviewViewController, animated: true)
     }
 
     private func displayQuad() {

@@ -56,8 +56,11 @@ public final class ImageScannerController: UINavigationController {
         return view
     }()
     
+    private let scannerVC:ScannerViewController = ScannerViewController()
+    private var editVC:EditScanViewController? = nil
+    
     public required init(image: UIImage? = nil, delegate: ImageScannerControllerDelegate? = nil) {
-        super.init(rootViewController: ScannerViewController())
+        super.init(rootViewController: self.scannerVC)
         
         self.imageScannerDelegate = delegate
         
@@ -67,6 +70,8 @@ public final class ImageScannerController: UINavigationController {
             navigationBar.tintColor = .black
         }
         navigationBar.isTranslucent = false
+        self.isNavigationBarHidden = true
+        self.isToolbarHidden = true 
         self.view.addSubview(blackFlashView)
         setupConstraints()
         
@@ -89,13 +94,17 @@ public final class ImageScannerController: UINavigationController {
                 VisionRectangleDetector.rectangle(forImage: ciImage, orientation: orientation) { (quad) in
                     detectedQuad = quad?.toCartesian(withHeight: orientedImage.extent.height)
                     let editViewController = EditScanViewController(image: image, quad: detectedQuad, rotateImage: false)
+                    self.editVC = editViewController
                     self.setViewControllers([editViewController], animated: true)
+                    
                 }
             } else {
                 // Use the CIRectangleDetector on iOS 10 to attempt to find a rectangle from the initial image.
                 detectedQuad = CIRectangleDetector.rectangle(forImage: ciImage)?.toCartesian(withHeight: orientedImage.extent.height)
                 let editViewController = EditScanViewController(image: image, quad: detectedQuad, rotateImage: false)
+                self.editVC = editViewController
                 setViewControllers([editViewController], animated: false)
+                
             }
         }
     }
@@ -117,6 +126,26 @@ public final class ImageScannerController: UINavigationController {
         ]
         
         NSLayoutConstraint.activate(blackFlashViewConstraints)
+    }
+    
+    public func popVC() {
+        self.popViewController(animated: true)
+    }
+    
+    public func doneOnTap() {
+        if self.editVC != nil {
+            self.editVC!.done()
+        }
+        else {
+            guard let vc:EditScanViewController = self.viewControllers.last as? EditScanViewController else {
+                return
+            }
+            vc.done()
+        }
+    }
+    
+    public func captureImage() {
+        self.scannerVC.captureImage()
     }
     
     override public var supportedInterfaceOrientations: UIInterfaceOrientationMask {

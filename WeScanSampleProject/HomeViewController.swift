@@ -37,7 +37,67 @@ final class HomeViewController: UIViewController {
         button.layer.cornerRadius = 10.0
         return button
     }()
+    
+    lazy private var shutterButton: UIButton = {
+           let button = UIButton(type: .custom)
+           button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
+           button.setTitle("Take Photo", for: .normal)
+           button.translatesAutoresizingMaskIntoConstraints = true
+           button.addTarget(self, action: #selector(capturePhoto), for: .touchUpInside)
+           button.backgroundColor = UIColor(red: 64.0 / 255.0, green: 159 / 255.0, blue: 255 / 255.0, alpha: 1.0)
+           button.layer.cornerRadius = 10.0
+        button.frame = CGRect(x: 160, y: 540, width: 100, height: 100)
+           return button
+       }()
+    
+    lazy private var doneButton: UIButton = {
+              let button = UIButton(type: .custom)
+              button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
+              button.setTitle("Done", for: .normal)
+              button.translatesAutoresizingMaskIntoConstraints = true
+              button.addTarget(self, action: #selector(doneOnTap), for: .touchUpInside)
+              button.backgroundColor = UIColor(red: 64.0 / 255.0, green: 159 / 255.0, blue: 255 / 255.0, alpha: 1.0)
+              button.layer.cornerRadius = 10.0
+           button.frame = CGRect(x: 260, y: 540, width: 100, height: 100)
+              return button
+          }()
+    
+    
+    lazy private var backButton: UIButton = {
+              let button = UIButton(type: .custom)
+              button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
+              button.setTitle("Back", for: .normal)
+              button.translatesAutoresizingMaskIntoConstraints = true
+              button.addTarget(self, action: #selector(backVC), for: .touchUpInside)
+              button.backgroundColor = UIColor(red: 64.0 / 255.0, green: 159 / 255.0, blue: 255 / 255.0, alpha: 1.0)
+              button.layer.cornerRadius = 10.0
+           button.frame = CGRect(x: 60, y: 540, width: 100, height: 100)
+              return button
+          }()
+    
+    lazy private var pickTypeButton: UIButton = {
+                let button = UIButton(type: .custom)
+                button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
+                button.setTitle("Scan Select", for: .normal)
+                button.translatesAutoresizingMaskIntoConstraints = true
+                button.addTarget(self, action: #selector(scanOrSelectImage(_:)), for: .touchUpInside)
+                button.backgroundColor = UIColor(red: 64.0 / 255.0, green: 159 / 255.0, blue: 255 / 255.0, alpha: 1.0)
+                button.layer.cornerRadius = 10.0
+             button.frame = CGRect(x: 60, y: 640, width: 100, height: 100)
+                return button
+            }()
+    
+    
 
+    lazy private var viewCamera:UIView = {
+        let vv = UIView()
+        vv.frame = CGRect(x: 16, y: 26, width: 350, height: 500)
+        vv.backgroundColor = UIColor.green
+        vv.translatesAutoresizingMaskIntoConstraints = true
+        return vv
+    }()
+
+    var scannerViewController:ImageScannerController!
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -45,6 +105,16 @@ final class HomeViewController: UIViewController {
         
         setupViews()
         setupConstraints()
+        logoImageView.removeFromSuperview()
+        logoLabel.removeFromSuperview()
+        scanButton.removeFromSuperview()
+        
+        scannerViewController = ImageScannerController(delegate: self)
+        self.addChild(scannerViewController)
+        scannerViewController.view.frame = CGRect(origin: CGPoint.zero, size: self.viewCamera.frame.size)
+        self.viewCamera.addSubview(scannerViewController.view)
+        scannerViewController.didMove(toParent: self)
+        self.view.bringSubviewToFront(self.shutterButton)
     }
     
     // MARK: - Setups
@@ -53,6 +123,11 @@ final class HomeViewController: UIViewController {
         view.addSubview(logoImageView)
         view.addSubview(logoLabel)
         view.addSubview(scanButton)
+        view.addSubview(shutterButton)
+        view.addSubview(self.viewCamera)
+        view.addSubview(backButton)
+        view.addSubview(doneButton)
+        view.addSubview(pickTypeButton)
     }
     
     private func setupConstraints() {
@@ -93,6 +168,19 @@ final class HomeViewController: UIViewController {
     }
     
     // MARK: - Actions
+    
+    @objc func doneOnTap() {
+        self.scannerViewController.doneOnTap()
+    }
+    
+    @objc func backVC() {
+        self.scannerViewController.popVC()
+    }
+    
+    
+    @objc func capturePhoto() {
+        self.scannerViewController.captureImage()
+    }
     
     @objc func scanOrSelectImage(_ sender: UIButton) {
         let actionSheet = UIAlertController(title: "Would you like to scan an image or select one from your photo library?", message: nil, preferredStyle: .actionSheet)
@@ -142,6 +230,7 @@ extension HomeViewController: ImageScannerControllerDelegate {
     }
     
     func imageScannerController(_ scanner: ImageScannerController, didFinishScanningWithResults results: ImageScannerResults) {
+        
         scanner.dismiss(animated: true, completion: nil)
     }
     
@@ -160,7 +249,16 @@ extension HomeViewController: UIImagePickerControllerDelegate, UINavigationContr
         picker.dismiss(animated: true)
         
         guard let image = info[.originalImage] as? UIImage else { return }
-        let scannerViewController = ImageScannerController(image: image, delegate: self)
-        present(scannerViewController, animated: true)
+        self.scannerViewController.willMove(toParent: nil)
+        self.scannerViewController.view.removeFromSuperview()
+        self.scannerViewController.removeFromParent()
+        
+        self.scannerViewController = ImageScannerController(image: image, delegate: self)
+        self.addChild(scannerViewController)
+        scannerViewController.view.frame = CGRect(origin: CGPoint.zero, size: self.viewCamera.frame.size)
+        self.viewCamera.addSubview(scannerViewController.view)
+        scannerViewController.didMove(toParent: self)
+        self.view.bringSubviewToFront(self.shutterButton)
+        
     }
 }
