@@ -52,6 +52,8 @@
 		A1F22EA3202DAA74001723AD /* RectangleFeaturesFunnel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F22EA2202DAA74001723AD /* RectangleFeaturesFunnel.swift */; };
 		A1F22EA5202DB3AA001723AD /* CGPoint+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F22EA4202DB3AA001723AD /* CGPoint+Utils.swift */; };
 		A1F22ECE2031937E001723AD /* EditScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F22ECD2031937E001723AD /* EditScanViewController.swift */; };
+		A34A1BD523D9E8AB0006EF7B /* ImageScannerScan.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34A1BD423D9E8AB0006EF7B /* ImageScannerScan.swift */; };
+		A34A1BD723D9E8CF0006EF7B /* ImageScannerResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34A1BD623D9E8CF0006EF7B /* ImageScannerResults.swift */; };
 		B9253F3F22190B7400C5DE7C /* CGSize+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9253F3E22190B7400C5DE7C /* CGSize+Utils.swift */; };
 		B9274D3A219B951000F9FCD1 /* CIImage+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9274D39219B951000F9FCD1 /* CIImage+Utils.swift */; };
 		B940E38A21A77192003B3C0B /* enhance@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B940E38721A77192003B3C0B /* enhance@3x.png */; };
@@ -236,6 +238,8 @@
 		A1F22EA2202DAA74001723AD /* RectangleFeaturesFunnel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangleFeaturesFunnel.swift; sourceTree = "<group>"; };
 		A1F22EA4202DB3AA001723AD /* CGPoint+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Utils.swift"; sourceTree = "<group>"; };
 		A1F22ECD2031937E001723AD /* EditScanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditScanViewController.swift; sourceTree = "<group>"; };
+		A34A1BD423D9E8AB0006EF7B /* ImageScannerScan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageScannerScan.swift; sourceTree = "<group>"; };
+		A34A1BD623D9E8CF0006EF7B /* ImageScannerResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageScannerResults.swift; sourceTree = "<group>"; };
 		B9253F3E22190B7400C5DE7C /* CGSize+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+Utils.swift"; sourceTree = "<group>"; };
 		B9274D39219B951000F9FCD1 /* CIImage+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CIImage+Utils.swift"; sourceTree = "<group>"; };
 		B940E38721A77192003B3C0B /* enhance@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "enhance@3x.png"; sourceTree = "<group>"; };
@@ -385,6 +389,7 @@
 		A1D4BCEE202C4F4100FCDDEC /* WeScan */ = {
 			isa = PBXGroup;
 			children = (
+				A34A1BCC23D9E8940006EF7B /* Models */,
 				A1DF909F2031D89D00841A11 /* ImageScannerController.swift */,
 				A1DF90E220358C9E00841A11 /* Protocols */,
 				A1F22ECF203199E7001723AD /* Scan */,
@@ -486,6 +491,15 @@
 				C31DD8A220C087D80072D439 /* ZoomGestureController.swift */,
 			);
 			path = Edit;
+			sourceTree = "<group>";
+		};
+		A34A1BCC23D9E8940006EF7B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A34A1BD423D9E8AB0006EF7B /* ImageScannerScan.swift */,
+				A34A1BD623D9E8CF0006EF7B /* ImageScannerResults.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		B9274D2D219AE10B00F9FCD1 /* Flash */ = {
@@ -806,7 +820,9 @@
 				A11C5CDB20495EC9005075FE /* AVCaptureVideoOrientation+Utils.swift in Sources */,
 				A1DF90F22035992A00841A11 /* CGAffineTransform+Utils.swift in Sources */,
 				A1F22EA3202DAA74001723AD /* RectangleFeaturesFunnel.swift in Sources */,
+				A34A1BD523D9E8AB0006EF7B /* ImageScannerScan.swift in Sources */,
 				A1D4BD0E202C57A400FCDDEC /* CaptureSessionManager.swift in Sources */,
+				A34A1BD723D9E8CF0006EF7B /* ImageScannerResults.swift in Sources */,
 				B9AAE88B219E6C0400205620 /* FocusRectangleView.swift in Sources */,
 				A1F22ECE2031937E001723AD /* EditScanViewController.swift in Sources */,
 				A1F22E9F202C8D70001723AD /* Quadrilateral.swift in Sources */,
