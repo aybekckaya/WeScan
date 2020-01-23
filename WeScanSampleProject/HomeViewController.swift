@@ -238,6 +238,10 @@ extension HomeViewController: ImageScannerControllerDelegate {
         scanner.dismiss(animated: true, completion: nil)
     }
     
+    func imageScannerControllerWillShowEditViewController(_ scanner: ImageScannerController) {
+        print("Will Show")
+    }
+    
 }
 
 extension HomeViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {

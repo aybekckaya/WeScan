@@ -76,6 +76,13 @@ final class EditScanViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let imageScannerController = navigationController as? ImageScannerController {
+            imageScannerController.imageScannerDelegate?.imageScannerControllerWillShowEditViewController(imageScannerController)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
