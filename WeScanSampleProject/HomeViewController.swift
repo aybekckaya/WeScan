@@ -111,6 +111,7 @@ final class HomeViewController: UIViewController {
         
         scannerViewController = ImageScannerController(delegate: self)
         self.addChild(scannerViewController)
+        scannerViewController.isAutoScanEnabled = true
         scannerViewController.view.frame = CGRect(origin: CGPoint.zero, size: self.viewCamera.frame.size)
         self.viewCamera.addSubview(scannerViewController.view)
         scannerViewController.didMove(toParent: self)

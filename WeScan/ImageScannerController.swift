@@ -62,6 +62,12 @@ public final class ImageScannerController: UINavigationController {
     private let scannerVC:ScannerViewController = ScannerViewController()
     private var editVC:EditScanViewController? = nil
     
+    public var isAutoScanEnabled: Bool = CaptureSession.current.isAutoScanEnabled {
+        didSet {
+            CaptureSession.current.isAutoScanEnabled = isAutoScanEnabled
+        }
+    }
+    
     public required init(image: UIImage? = nil, delegate: ImageScannerControllerDelegate? = nil) {
         super.init(rootViewController: self.scannerVC)
         
